@@ -1,0 +1,38 @@
+version: '2.1'
+
+services:
+  nocodb-mysql:
+    image: mysql:5.7 
+    container_name: turbotools-nocodb-mysql
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+#    below line shows how to change charset and collation
+#    uncomment it if necessary
+#    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: nocodb
+      MYSQL_DATABASE: nocodb
+      MYSQL_USER: nocodb
+      MYSQL_PASSWORD: nocodb
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 10
+      
+  nocodb:
+    depends_on:
+      nocodb-mysql:
+        condition: service_healthy
+    image: nocodb/nocodb:0.96.2
+    container_name: turbotools-nocodb
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - nc_data:/usr/app/data
+    environment:
+      NC_DB: "mysql2://nocodb-mysql:3306?u=nocodb&p=nocodb&d=nocodb"
+volumes:
+  db_data: {}
+  nc_data: {}

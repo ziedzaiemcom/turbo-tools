@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:v2.22.4
+    container_name: turbotools-filebrowser
+    restart: unless-stopped
+    ports:
+      - 9888:80
+    volumes:
+      - filebrowser_data:/srv
+
+volumes:
+  filebrowser_data:
+

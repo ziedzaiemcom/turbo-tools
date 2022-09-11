@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  onedev:
+    image: 1dev/server:7.4.29
+    container_name: turbotools-onedev
+    restart: unless-stopped
+    volumes:
+      - onedev_data:/opt/onedev
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 6610:6610
+      - 6611:6611
+
+volumes:
+  onedev_data:

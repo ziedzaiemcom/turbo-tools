@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  homarr:
+    image: ghcr.io/ajnart/homarr:0.10.0
+    container_name: turbotools-homarr
+    restart: unless-stopped
+    ports:
+      - 7575:7575
